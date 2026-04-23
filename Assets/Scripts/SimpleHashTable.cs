@@ -29,9 +29,31 @@ public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue>
         set => Add(key, value);
     }
 
-    public ICollection<TKey> Keys => throw new System.NotImplementedException();
+    public ICollection<TKey> Keys
+    {
+        get
+        {
+            var keys = new List<TKey>();
+            foreach (var pair in this)
+            {
+                keys.Add(pair.Key);
+            }
+            return keys;
+        }
+    }
 
-    public ICollection<TValue> Values => throw new System.NotImplementedException();
+    public ICollection<TValue> Values
+    {
+        get
+        {
+            var values = new List<TValue>();
+            foreach (var pair in this)
+            {
+                values.Add(pair.Value);
+            }
+            return values;
+        }
+    }
 
     public int Count => count;
 
@@ -53,6 +75,11 @@ public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue>
 
     public void Add(TKey key, TValue value)
     {
+        if ((float)count / size > 0.7f)
+        {
+            Resize();
+        }
+
         int index = GetHash(key);
 
         if (isOccupied[index])
@@ -70,7 +97,6 @@ public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue>
 
     public void Clear()
     {
-        size = 10;
         buckets = new KeyValuePair<TKey, TValue>[size];
         isOccupied = new bool[size];
         count = 0;
@@ -89,12 +115,21 @@ public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue>
 
     public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
     {
-        throw new System.NotImplementedException();
+        foreach (var pair in this)
+        {
+            array[arrayIndex++] = pair;
+        }
     }
 
     public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
     {
-        throw new System.NotImplementedException();
+        for (int i = 0; i < size; i++)
+        {
+            if (isOccupied[i])
+            {
+                yield return buckets[i];
+            }
+        }
     }
 
     public bool Remove(TKey key)
@@ -139,6 +174,27 @@ public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue>
     // 키의 해시 값 얻기
     public int GetHash(TKey key)
     {
+        if (key == null)
+            throw new ArgumentNullException(nameof(key));
+
         return Mathf.Abs(keyComparer.GetHashCode(key)) % size;
+    }
+
+    public void Resize()
+    {
+        int newSize = size * 2;
+        var oldBuckets = buckets;
+        var oldOccupied = isOccupied;
+
+        size = newSize;
+        buckets = new KeyValuePair<TKey, TValue>[size];
+        isOccupied = new bool[size];
+        count = 0;
+
+        for (int i = 0; i < oldBuckets.Length; i++)
+        {
+            if (oldOccupied[i])
+                Add(oldBuckets[i].Key, oldBuckets[i].Value);
+        }
     }
 }
