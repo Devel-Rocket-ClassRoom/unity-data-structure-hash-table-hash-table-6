@@ -227,10 +227,7 @@ MSBuild_Logs/
 
 VS Code (optional, uncomment if using VS Code alongside)
 .vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+
 
 # Built Visual Studio Code Extensions
 *.vsix
