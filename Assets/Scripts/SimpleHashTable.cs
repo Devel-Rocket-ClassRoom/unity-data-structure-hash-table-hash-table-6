@@ -1,9 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 
 public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue>
 {
+    private int size;
+    private KeyValuePair<TKey, TValue>[] buckets;
+    private bool[] isOccupied;
+    private int count;
+
     public TValue this[TKey key] { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
     public ICollection<TKey> Keys => throw new System.NotImplementedException();
@@ -12,7 +18,15 @@ public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue>
 
     public int Count => throw new System.NotImplementedException();
 
-    public bool IsReadOnly => throw new System.NotImplementedException();
+    public bool IsReadOnly => false;
+
+    public SimpleHashTable()
+    {
+        size = 10;
+        buckets = new KeyValuePair<TKey, TValue>[size];
+        isOccupied = new bool[size];
+        count = 0;
+    }
 
     public void Add(TKey key, TValue value)
     {
@@ -61,11 +75,26 @@ public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue>
 
     public bool TryGetValue(TKey key, out TValue value)
     {
-        throw new System.NotImplementedException();
+        int index = GetBucketIndex(key);
+
+        if (isOccupied[index] && buckets[index].Key.Equals(key))
+        {
+            value = buckets[index].Value;
+            return true;
+        }
+
+        value = default;
+        return false;
     }
 
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
+    }
+
+    // 키의 해시 값 얻기
+    public int GetBucketIndex(TKey key)
+    {
+        return Mathf.Abs(key.GetHashCode()) % size;
     }
 }
