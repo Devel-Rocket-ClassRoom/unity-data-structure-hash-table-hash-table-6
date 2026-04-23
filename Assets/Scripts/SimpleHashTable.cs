@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Collections.LowLevel.Unsafe;
@@ -10,7 +11,21 @@ public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue>
     private bool[] isOccupied;
     private int count;
 
-    public TValue this[TKey key] { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+    public TValue this[TKey key]
+    {
+        get
+        {
+            if (TryGetValue(key, out TValue value))
+            {
+                return value;
+            }
+            else
+            {
+                throw new KeyNotFoundException($"Key not found: {key}");
+            }
+        }
+        set => Add(key, value);
+    }
 
     public ICollection<TKey> Keys => throw new System.NotImplementedException();
 
@@ -30,12 +45,19 @@ public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue>
 
     public void Add(TKey key, TValue value)
     {
-        throw new System.NotImplementedException();
+        int index = GetHash(key);
+
+        if (isOccupied[index])
+            throw new InvalidOperationException($"Collision at index {index}");
+
+        buckets[index] = new KeyValuePair<TKey, TValue>(key, value);
+        isOccupied[index] = true;
+        count++;
     }
 
     public void Add(KeyValuePair<TKey, TValue> item)
     {
-        throw new System.NotImplementedException();
+        Add(item.Key, item.Value);
     }
 
     public void Clear()
@@ -75,7 +97,7 @@ public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue>
 
     public bool TryGetValue(TKey key, out TValue value)
     {
-        int index = GetBucketIndex(key);
+        int index = GetHash(key);
 
         if (isOccupied[index] && buckets[index].Key.Equals(key))
         {
@@ -93,7 +115,7 @@ public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue>
     }
 
     // 키의 해시 값 얻기
-    public int GetBucketIndex(TKey key)
+    public int GetHash(TKey key)
     {
         return Mathf.Abs(key.GetHashCode()) % size;
     }
