@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 
 public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue>
@@ -10,6 +9,9 @@ public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue>
     private KeyValuePair<TKey, TValue>[] buckets;
     private bool[] isOccupied;
     private int count;
+
+    private readonly IEqualityComparer<TKey> keyComparer;
+    private readonly IEqualityComparer<TValue> valueComparer;
 
     public TValue this[TKey key]
     {
@@ -31,16 +33,22 @@ public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue>
 
     public ICollection<TValue> Values => throw new System.NotImplementedException();
 
-    public int Count => throw new System.NotImplementedException();
+    public int Count => count;
 
     public bool IsReadOnly => false;
 
-    public SimpleHashTable()
+    public SimpleHashTable(
+        IEqualityComparer<TKey> keyComparer = null,
+        IEqualityComparer<TValue> valueComparer = null
+    )
     {
         size = 10;
         buckets = new KeyValuePair<TKey, TValue>[size];
         isOccupied = new bool[size];
         count = 0;
+
+        this.keyComparer = keyComparer ?? EqualityComparer<TKey>.Default;
+        this.valueComparer = valueComparer ?? EqualityComparer<TValue>.Default;
     }
 
     public void Add(TKey key, TValue value)
@@ -67,12 +75,13 @@ public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue>
 
     public bool Contains(KeyValuePair<TKey, TValue> item)
     {
-        throw new System.NotImplementedException();
+        return TryGetValue(item.Key, out TValue value)
+            && valueComparer.Equals(value, item.Value);
     }
 
     public bool ContainsKey(TKey key)
     {
-        throw new System.NotImplementedException();
+        return TryGetValue(key, out _);
     }
 
     public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
@@ -99,7 +108,7 @@ public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue>
     {
         int index = GetHash(key);
 
-        if (isOccupied[index] && buckets[index].Key.Equals(key))
+        if (isOccupied[index] && keyComparer.Equals(buckets[index].Key, key))
         {
             value = buckets[index].Value;
             return true;
@@ -117,6 +126,6 @@ public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue>
     // 키의 해시 값 얻기
     public int GetHash(TKey key)
     {
-        return Mathf.Abs(key.GetHashCode()) % size;
+        return Mathf.Abs(keyComparer.GetHashCode(key)) % size;
     }
 }
