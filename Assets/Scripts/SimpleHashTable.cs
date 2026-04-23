@@ -70,7 +70,10 @@ public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue>
 
     public void Clear()
     {
-        throw new System.NotImplementedException();
+        size = 10;
+        buckets = new KeyValuePair<TKey, TValue>[size];
+        isOccupied = new bool[size];
+        count = 0;
     }
 
     public bool Contains(KeyValuePair<TKey, TValue> item)
@@ -96,12 +99,22 @@ public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue>
 
     public bool Remove(TKey key)
     {
-        throw new System.NotImplementedException();
+        int index = GetHash(key);
+
+        if (isOccupied[index] && keyComparer.Equals(buckets[index].Key, key))
+        {
+            buckets[index] = default;
+            isOccupied[index] = false;
+            count--;
+            return true;
+        }
+
+        return false;
     }
 
     public bool Remove(KeyValuePair<TKey, TValue> item)
     {
-        throw new System.NotImplementedException();
+        return Contains(item) && Remove(item.Key);
     }
 
     public bool TryGetValue(TKey key, out TValue value)
