@@ -257,7 +257,7 @@ public class OpenAddressingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
         throw new InvalidOperationException();
     }
 
-    int GetHash(TKey key)
+    public int GetHash(TKey key)
     {
         int hash = key.GetHashCode();
         return hash & 0x7FFFFFFF;
