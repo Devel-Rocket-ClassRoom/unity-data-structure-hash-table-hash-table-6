@@ -1,6 +1,6 @@
-using System;
+
+using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 
 public class ChainingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
@@ -8,9 +8,15 @@ public class ChainingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
     private LinkedList<KeyValuePair<TKey, TValue>>[] ChainingIndex;    // 내부 링크드 리스트 배열
     private const double LoadFactorThreshold = 0.75;   // 최대 허용 로드팩터 (예: 0.75)
     private int count;
-    public int capacity => ChainingIndex.Length;   // 현재 내부 배열 크기 (size)
+    public int Capacity => ChainingIndex.Length;   // 현재 내부 배열 크기 (size)
     public int Count => count;  // 현재 저장된 데이터 개수
     public bool IsReadOnly => false;
+
+    public ICollection<TKey> Keys => throw new System.NotImplementedException();
+
+    public ICollection<TValue> Values => throw new System.NotImplementedException();
+
+    public TValue this[TKey key] { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
     // 초기 생성자
     public ChainingHashTable(int Capacity = 16)
@@ -21,7 +27,7 @@ public class ChainingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
     private int GetIndex(TKey key)
     {
         int hash = key.GetHashCode();
-        return (hash & 0x7fffffff) % capacity;
+        return (hash & 0x7fffffff) % Capacity;
     }
 
     // 삽입 - 새로운 키-값 쌍 추가 (충돌 시 링크드 리스트로 연결)
@@ -54,7 +60,7 @@ public class ChainingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
 
 
     // 충돌 - 같은 슬롯의 노드에 링크드 리스트로 연결
-    private void Crash(TKey key, TValue value, int index)
+    private bool Crash(TKey key, TValue value, int index)
     {
         var list = ChainingIndex[index];
         var current = list.First;
@@ -87,8 +93,8 @@ public class ChainingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
     // Resize - 내부 배열 크기 증가 (size * 2) -> 기존 노드 재배치 (Rehashing)
     public void Resize()
     {
-        int capacity2 = capacity * 2;   // size 2배 증가
-        var newChainingIndex = new LinkedList<KeyValuePair<TKey, TValue>>[capacity2];   // 새로운 내부 링크드 리스트 배열 생성
+        int Capacity2 = Capacity * 2;   // size 2배 증가
+        var newChainingIndex = new LinkedList<KeyValuePair<TKey, TValue>>[Capacity2];   // 새로운 내부 링크드 리스트 배열 생성
 
         // 기존 노드 재배치 (Rehashing)
         foreach (var list in ChainingIndex)
@@ -99,7 +105,7 @@ public class ChainingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
             }
             foreach (var kvp in list)
             {
-                int newIndex = (kvp.Key.GetHashCode() & 0x7fffffff) % capacity2;   // 새로운 인덱스 계산
+                int newIndex = (kvp.Key.GetHashCode() & 0x7fffffff) % Capacity2;   // 새로운 인덱스 계산
                 if (newChainingIndex[newIndex] == null)   // 새로운 슬롯이 비어있는 경우
                 {
                     newChainingIndex[newIndex] = new LinkedList<KeyValuePair<TKey, TValue>>();
@@ -112,7 +118,7 @@ public class ChainingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
 
 
     // 검색 - 키에 해당하는 값 반환 (충돌 시 링크드 리스트 탐색)
-    public bool Find(TKey key, out TValue value)
+    public bool TryGetValue(TKey key, out TValue value)
     {
         value = default;
         int index = GetIndex(key);
@@ -136,7 +142,7 @@ public class ChainingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
     // 삭제 - 기존 노드 제거
     public bool Remove(TKey key)
     {
-        if (Find(key, out TValue value))    // 키가 존재하는 경우에만 삭제
+        if (TryGetValue(key, out TValue value))    // 키가 존재하는 경우에만 삭제
         {
             int index = GetIndex(key);
             var list = ChainingIndex[index];
@@ -168,5 +174,31 @@ public class ChainingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
+    }
+
+    public bool ContainsKey(TKey key)
+    {
+        throw new System.NotImplementedException();
+
+    }
+
+    public void Clear()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public bool Contains(KeyValuePair<TKey, TValue> item)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public bool Remove(KeyValuePair<TKey, TValue> item)
+    {
+        throw new System.NotImplementedException();
     }
 }
