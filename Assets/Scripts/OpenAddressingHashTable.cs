@@ -134,8 +134,7 @@ public class OpenAddressingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
 
         if (firstDeletedIndex != null)
         {
-            InsertInto(firstDeletedIndex.Value, item);
-            return;
+            idx = firstDeletedIndex.Value;
         }
 
         InsertInto(idx, item);
@@ -304,6 +303,14 @@ public class OpenAddressingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
 
         index = -1;
         return false;
+    }
+
+    public int GetIndex(TKey key)
+    {
+        if (Search(key, out int index))
+            return index;
+        else
+            throw new KeyNotFoundException();
     }
 }
 
