@@ -180,6 +180,11 @@ public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue>
         return Mathf.Abs(keyComparer.GetHashCode(key)) % capacity;
     }
 
+    public int GetIndex(TKey key)
+    {
+        return GetHash(key);
+    }
+
     public void Resize()
     {
         int newSize = capacity * 2;
