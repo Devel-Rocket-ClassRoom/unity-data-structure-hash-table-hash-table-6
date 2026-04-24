@@ -40,11 +40,56 @@ public class OpenAddressingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
     }
 
 
-    public TValue this[TKey key] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public TValue this[TKey key]
+    {
+        get
+        {
+            if (Search(key, out int idx))
+                return buckets[idx].Value;
+            else
+                throw new KeyNotFoundException("Å° ¾øÀ½");
+        }
+        set
+        {
+            Add(key, value);
+        }
+    }
 
-    public ICollection<TKey> Keys => throw new NotImplementedException();
+    public ICollection<TKey> Keys
+    {
+        get
+        {
+            List<TKey> list = new List<TKey>();
 
-    public ICollection<TValue> Values => throw new NotImplementedException();
+            for (int i = 0; i<buckets.Length; i++)
+            {
+                if (occupied[i])
+                {
+                    list.Add(buckets[i].Key);
+                }
+            }
+
+            return list;
+        }
+    }
+
+    public ICollection<TValue> Values
+    {
+        get
+        {
+            List<TValue> list = new List<TValue>();
+
+            for (int i = 0; i < buckets.Length; i++)
+            {
+                if (occupied[i])
+                {
+                    list.Add(buckets[i].Value);
+                }
+            }
+
+            return list;
+        }
+    }
 
     public int Count { get; private set; }
     public int Capacity { get { return buckets.Length; } }
@@ -110,7 +155,23 @@ public class OpenAddressingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
 
     public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
     {
-        throw new NotImplementedException();
+        for (int i = 0; i < Capacity; i++)
+        {
+            if (occupied[i])
+            {
+                yield return buckets[i];
+            }
+        }
+    }
+
+    public IEnumerable<KeyValuePair<TKey, TValue>> GetEnumerable()
+    {
+        var e = GetEnumerator();
+
+        while (e.MoveNext())
+        {
+            yield return e.Current;
+        }
     }
 
 
@@ -135,7 +196,11 @@ public class OpenAddressingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
 
     public bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value)
     {
-        throw new NotImplementedException();
+        bool isFind = Search(key, out int idx);
+
+        value = buckets[idx].Value;
+
+        return isFind;
     }
 
 
@@ -228,18 +293,6 @@ public class OpenAddressingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
 
         index = -1;
         return false;
-    }
-
-    public void DebugBucket()
-    {
-        StringBuilder sb = new StringBuilder();
-
-        for (int i = 0; i < buckets.Length; i++)
-        {
-            sb.Append(buckets[i].Key);
-        }
-
-        Debug.Log(sb.ToString());
     }
 }
 

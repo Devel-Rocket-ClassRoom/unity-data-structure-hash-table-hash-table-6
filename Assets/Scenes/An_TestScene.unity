@@ -369,7 +369,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe6e54e9a57fd1b4b829c62675a5534d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OAHT_Test
-  mode: 0
+  mode: 1
 --- !u!4 &1025908872
 Transform:
   m_ObjectHideFlags: 0
