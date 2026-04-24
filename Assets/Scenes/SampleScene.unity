@@ -2037,32 +2037,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 467119800}
   m_CullTransparentMesh: 1
---- !u!114 &467119804
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 467119800}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00aff143e4fa50449862ae39a5748100, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HashVisualizer
-  slotPrefab: {fileID: 5032431888542249751, guid: ec0149201fe25554c877e1b410dce09a, type: 3}
-  slots:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  keyInput: {fileID: 866240255}
-  valueInput: {fileID: 1812792706}
 --- !u!224 &472452511 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 9018204587125789409, guid: 95c86b8f3340c08449fb7cf7fda65e6e, type: 3}
@@ -3016,10 +2990,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slot (2)
       objectReference: {fileID: 0}
-    - target: {fileID: 5032431888542249751, guid: ec0149201fe25554c877e1b410dce09a, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5414688843367046196, guid: ec0149201fe25554c877e1b410dce09a, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -3168,10 +3138,6 @@ PrefabInstance:
     - target: {fileID: 5032431888542249751, guid: ec0149201fe25554c877e1b410dce09a, type: 3}
       propertyPath: m_Name
       value: Slot (5)
-      objectReference: {fileID: 0}
-    - target: {fileID: 5032431888542249751, guid: ec0149201fe25554c877e1b410dce09a, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5414688843367046196, guid: ec0149201fe25554c877e1b410dce09a, type: 3}
       propertyPath: m_Pivot.x
@@ -3974,10 +3940,6 @@ PrefabInstance:
     - target: {fileID: 5032431888542249751, guid: ec0149201fe25554c877e1b410dce09a, type: 3}
       propertyPath: m_Name
       value: Slot (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 5032431888542249751, guid: ec0149201fe25554c877e1b410dce09a, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5414688843367046196, guid: ec0149201fe25554c877e1b410dce09a, type: 3}
       propertyPath: m_Pivot.x
@@ -5633,10 +5595,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slot (6)
       objectReference: {fileID: 0}
-    - target: {fileID: 5032431888542249751, guid: ec0149201fe25554c877e1b410dce09a, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5414688843367046196, guid: ec0149201fe25554c877e1b410dce09a, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -7079,10 +7037,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slot (9)
       objectReference: {fileID: 0}
-    - target: {fileID: 5032431888542249751, guid: ec0149201fe25554c877e1b410dce09a, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5414688843367046196, guid: ec0149201fe25554c877e1b410dce09a, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -7506,10 +7460,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slot (8)
       objectReference: {fileID: 0}
-    - target: {fileID: 5032431888542249751, guid: ec0149201fe25554c877e1b410dce09a, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5414688843367046196, guid: ec0149201fe25554c877e1b410dce09a, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -7658,10 +7608,6 @@ PrefabInstance:
     - target: {fileID: 5032431888542249751, guid: ec0149201fe25554c877e1b410dce09a, type: 3}
       propertyPath: m_Name
       value: Slot (7)
-      objectReference: {fileID: 0}
-    - target: {fileID: 5032431888542249751, guid: ec0149201fe25554c877e1b410dce09a, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5414688843367046196, guid: ec0149201fe25554c877e1b410dce09a, type: 3}
       propertyPath: m_Pivot.x
@@ -8190,10 +8136,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slot (11)
       objectReference: {fileID: 0}
-    - target: {fileID: 5032431888542249751, guid: ec0149201fe25554c877e1b410dce09a, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5414688843367046196, guid: ec0149201fe25554c877e1b410dce09a, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -8698,10 +8640,6 @@ PrefabInstance:
     - target: {fileID: 5032431888542249751, guid: ec0149201fe25554c877e1b410dce09a, type: 3}
       propertyPath: m_Name
       value: Slot (10)
-      objectReference: {fileID: 0}
-    - target: {fileID: 5032431888542249751, guid: ec0149201fe25554c877e1b410dce09a, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5414688843367046196, guid: ec0149201fe25554c877e1b410dce09a, type: 3}
       propertyPath: m_Pivot.x
@@ -9335,10 +9273,6 @@ PrefabInstance:
     - target: {fileID: 5032431888542249751, guid: ec0149201fe25554c877e1b410dce09a, type: 3}
       propertyPath: m_Name
       value: Slot (4)
-      objectReference: {fileID: 0}
-    - target: {fileID: 5032431888542249751, guid: ec0149201fe25554c877e1b410dce09a, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5414688843367046196, guid: ec0149201fe25554c877e1b410dce09a, type: 3}
       propertyPath: m_Pivot.x
@@ -10419,10 +10353,6 @@ PrefabInstance:
     - target: {fileID: 5032431888542249751, guid: ec0149201fe25554c877e1b410dce09a, type: 3}
       propertyPath: m_Name
       value: Slot (3)
-      objectReference: {fileID: 0}
-    - target: {fileID: 5032431888542249751, guid: ec0149201fe25554c877e1b410dce09a, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5414688843367046196, guid: ec0149201fe25554c877e1b410dce09a, type: 3}
       propertyPath: m_Pivot.x
