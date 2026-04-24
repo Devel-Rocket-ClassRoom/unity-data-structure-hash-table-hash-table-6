@@ -72,15 +72,14 @@ public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue>
         this.keyComparer = keyComparer ?? EqualityComparer<TKey>.Default;
         this.valueComparer = valueComparer ?? EqualityComparer<TValue>.Default;
     }
-
-    public void Add(TKey key, TValue value)
+    public void Add(TKey key, TValue value, out int index)
     {
         if ((float)count / capacity > 0.7f)
         {
             Resize();
         }
 
-        int index = GetHash(key);
+        index = GetHash(key);
 
         if (isOccupied[index])
             throw new InvalidOperationException($"Collision at index {index}");
@@ -88,6 +87,10 @@ public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue>
         buckets[index] = new KeyValuePair<TKey, TValue>(key, value);
         isOccupied[index] = true;
         count++;
+    }
+    public void Add(TKey key, TValue value)
+    {
+        Add(key, value, out _);
     }
 
     public void Add(KeyValuePair<TKey, TValue> item)
@@ -178,14 +181,6 @@ public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue>
             throw new ArgumentNullException(nameof(key));
 
         return Mathf.Abs(keyComparer.GetHashCode(key)) % capacity;
-    }
-
-    public int GetIndex(TKey key)
-    {
-        if (ContainsKey(key))
-            return GetHash(key);
-
-        else return default;
     }
 
     public void Resize()
