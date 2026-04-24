@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue>
+public class SimpleHashTable<TKey, TValue> : IHashTable<TKey, TValue>
 {
     private int capacity;
     private KeyValuePair<TKey, TValue>[] buckets;
@@ -12,6 +12,8 @@ public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue>
 
     private readonly IEqualityComparer<TKey> keyComparer;
     private readonly IEqualityComparer<TValue> valueComparer;
+
+    public int Capacity => capacity;
 
     public TValue this[TKey key]
     {

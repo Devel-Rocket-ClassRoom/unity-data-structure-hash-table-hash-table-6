@@ -10,7 +10,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEditor.Progress;
 
-public class OpenAddressingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
+public class OpenAddressingHashTable<TKey, TValue> : IHashTable<TKey, TValue>
 {
     private readonly double LoadFactor = 0.6;
 

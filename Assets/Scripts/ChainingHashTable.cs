@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-public class ChainingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
+public class ChainingHashTable<TKey, TValue> : IHashTable<TKey, TValue>
 {
     private LinkedList<KeyValuePair<TKey, TValue>>[] ChainingIndex;    // 내부 링크드 리스트 배열
     private const double LoadFactorThreshold = 0.75;   // 최대 허용 로드팩터 (예: 0.75)
