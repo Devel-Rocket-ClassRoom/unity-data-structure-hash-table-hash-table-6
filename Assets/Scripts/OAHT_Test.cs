@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class OAHT_Test : MonoBehaviour
 {
@@ -15,21 +16,31 @@ public class OAHT_Test : MonoBehaviour
         hashTable["4"] = 4;
         hashTable["5"] = 5;
         hashTable["6"] = 6;
-        hashTable["6"] = 8;
+        hashTable["7"] = 7;
+        hashTable["8"] = 8;
+        hashTable["9"] = 9;
+        hashTable["10"] = 10;
+        hashTable["11"] = 11;
+        hashTable["12"] = 12;
+        hashTable["13"] = 13;
+        hashTable["14"] = 14;
+        hashTable["15"] = 15;
+        hashTable.Remove("1");
 
         foreach (var key in hashTable.Keys)
         {
             Debug.Log($"{key} : {hashTable[key]}");
         }
 
-        Debug.Log(hashTable["7"]);
+        hashTable.Remove("1");
+
+        Debug.Log("========================");
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            
         }
     }
 }
