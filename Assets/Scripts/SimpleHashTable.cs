@@ -183,6 +183,14 @@ public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue>
         return Mathf.Abs(keyComparer.GetHashCode(key)) % capacity;
     }
 
+    public int GetIndex(TKey key)
+    {   
+        if(TryGetValue(key, out _))
+            return GetHash(key);
+
+        throw new KeyNotFoundException("Key not found");
+    }
+
     public void Resize()
     {
         int newSize = capacity * 2;

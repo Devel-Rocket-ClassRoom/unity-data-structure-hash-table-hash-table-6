@@ -89,6 +89,7 @@ GameObject:
   - component: {fileID: 7304164598736284855}
   - component: {fileID: 961294376121110982}
   - component: {fileID: 11751224611261620}
+  - component: {fileID: 2464803748415070490}
   m_Layer: 5
   m_Name: Slot
   m_TagString: Untagged
@@ -170,6 +171,21 @@ MonoBehaviour:
   m_EffectColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.19607843}
   m_EffectDistance: {x: 2, y: 2}
   m_UseGraphicAlpha: 1
+--- !u!114 &2464803748415070490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5032431888542249751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11cefd57b5d779c47b9452a1ffbd33e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SlotController
+  DataContainer: {fileID: 5607619545977064980}
+  dataBoxPrefab: {fileID: 6877400059852778417, guid: 11873987ffa91804a84321dbe6c2e543, type: 3}
+  IndexText: {fileID: 372722573731901386}
 --- !u!1 &6650556564121913247
 GameObject:
   m_ObjectHideFlags: 0
@@ -235,7 +251,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uBC84\uD0B7 1"
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c766ba0461fb5eb42ae65aa3b729f94b, type: 2}
   m_sharedMaterial: {fileID: 1098791761354916512, guid: c766ba0461fb5eb42ae65aa3b729f94b, type: 2}
