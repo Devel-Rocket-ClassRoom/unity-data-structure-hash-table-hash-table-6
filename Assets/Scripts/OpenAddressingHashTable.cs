@@ -164,19 +164,6 @@ public class OpenAddressingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
         }
     }
 
-    public List<KeyValuePair<TKey, TValue>> GetEnumerable()
-    {
-        var list = new List<KeyValuePair<TKey, TValue>>();
-
-        for (int i = 0; i < buckets.Length; i++)
-        {
-            if (occupied[i])
-                list.Add(buckets[i]);
-        }
-
-        return list;
-    }
-
 
     public bool Remove(TKey key)
     {

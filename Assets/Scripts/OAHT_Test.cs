@@ -41,19 +41,6 @@ public class OAHT_Test : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            var e = hashTable.GetEnumerable();
-
-            foreach (var item in e)
-            {
-                if (item.Key != null)
-                {
-                    Debug.Log($"{item.Key} : {hashTable[item.Key]}");
-                }
-                else
-                {
-                    Debug.Log("null");
-                }
-            }
         }
     }
 }
