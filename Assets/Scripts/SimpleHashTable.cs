@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue>
 {
-    private int size;
+    private int capacity;
     private KeyValuePair<TKey, TValue>[] buckets;
     private bool[] isOccupied;
     private int count;
@@ -64,9 +64,9 @@ public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue>
         IEqualityComparer<TValue> valueComparer = null
     )
     {
-        size = 10;
-        buckets = new KeyValuePair<TKey, TValue>[size];
-        isOccupied = new bool[size];
+        capacity = 10;
+        buckets = new KeyValuePair<TKey, TValue>[capacity];
+        isOccupied = new bool[capacity];
         count = 0;
 
         this.keyComparer = keyComparer ?? EqualityComparer<TKey>.Default;
@@ -75,7 +75,7 @@ public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue>
 
     public void Add(TKey key, TValue value)
     {
-        if ((float)count / size > 0.7f)
+        if ((float)count / capacity > 0.7f)
         {
             Resize();
         }
@@ -97,8 +97,8 @@ public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue>
 
     public void Clear()
     {
-        buckets = new KeyValuePair<TKey, TValue>[size];
-        isOccupied = new bool[size];
+        buckets = new KeyValuePair<TKey, TValue>[capacity];
+        isOccupied = new bool[capacity];
         count = 0;
     }
 
@@ -123,7 +123,7 @@ public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue>
 
     public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
     {
-        for (int i = 0; i < size; i++)
+        for (int i = 0; i < capacity; i++)
         {
             if (isOccupied[i])
             {
@@ -177,18 +177,18 @@ public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue>
         if (key == null)
             throw new ArgumentNullException(nameof(key));
 
-        return Mathf.Abs(keyComparer.GetHashCode(key)) % size;
+        return Mathf.Abs(keyComparer.GetHashCode(key)) % capacity;
     }
 
     public void Resize()
     {
-        int newSize = size * 2;
+        int newSize = capacity * 2;
         var oldBuckets = buckets;
         var oldOccupied = isOccupied;
 
-        size = newSize;
-        buckets = new KeyValuePair<TKey, TValue>[size];
-        isOccupied = new bool[size];
+        capacity = newSize;
+        buckets = new KeyValuePair<TKey, TValue>[capacity];
+        isOccupied = new bool[capacity];
         count = 0;
 
         for (int i = 0; i < oldBuckets.Length; i++)
