@@ -104,18 +104,45 @@ public class OpenAddressingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
     {
         int idx = GetHash(item.Key) % Capacity;
         int tryCount = 0;
+        int? firstDeletedIndex = null;
 
-        while (occupied[idx])
+        while (tryCount < Capacity)
         {
-            if (buckets[idx].Key.Equals(item.Key))
-            {
-                buckets[idx] = item;
-                return;
-            }
+            if (idx >= Capacity) break;
 
-            idx = Proving(item.Key, ++tryCount);
+            if (occupied[idx])
+            {
+                if (buckets[idx].Key.Equals(item.Key))
+                {
+                    buckets[idx] = item;
+                    return;
+                }
+                else
+                {
+                    idx = Proving(item.Key, ++tryCount);
+                    continue;
+                }
+            }
+            else if (deleted[idx])
+            {
+                if (firstDeletedIndex == null) firstDeletedIndex = idx;
+                idx = Proving(item.Key, ++tryCount);
+                continue;
+            }
+            else break;
         }
 
+        if (firstDeletedIndex != null)
+        {
+            InsertInto(firstDeletedIndex.Value, item);
+            return;
+        }
+
+        InsertInto(idx, item);
+    }
+
+    void InsertInto(int idx, KeyValuePair<TKey, TValue> item)
+    {
         buckets[idx] = item;
         occupied[idx] = true;
         deleted[idx] = false;
@@ -155,13 +182,7 @@ public class OpenAddressingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
 
     public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
     {
-        for (int i = 0; i < Capacity; i++)
-        {
-            if (occupied[i])
-            {
-                yield return buckets[i];
-            }
-        }
+        throw new NotImplementedException();
     }
 
 
@@ -255,7 +276,7 @@ public class OpenAddressingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
         int idx = GetHash(key) % Capacity;
         int tryCount = 0;
 
-        while (true)
+        while (tryCount < Capacity)
         {
             if (idx >= Capacity) break;
 
