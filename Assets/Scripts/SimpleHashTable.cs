@@ -182,7 +182,10 @@ public class SimpleHashTable<TKey, TValue> : IDictionary<TKey, TValue>
 
     public int GetIndex(TKey key)
     {
-        return GetHash(key);
+        if (ContainsKey(key))
+            return GetHash(key);
+
+        else return default;
     }
 
     public void Resize()
