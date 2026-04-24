@@ -44,6 +44,7 @@ public class ChainingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
 
     public TValue this[TKey key]
     {
+
         get
         {
             if (TryGetValue(key, out TValue value))
@@ -54,7 +55,14 @@ public class ChainingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
         }
         set
         {
-            Add(key, value);   // 키가 존재하면 값 업데이트, 존재하지 않으면 새로 추가
+            if (EqualityComparer<TKey>.Default.Equals(key, default))
+            {
+                this[key] = value;   // 키가 존재할 경우 업데이트
+            }
+            else
+            {
+                Add(key, value);    // 키가 존재하지 않을 경우 추가
+            }
         }
     }
 
@@ -129,11 +137,11 @@ public class ChainingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
 
         while (current != null)
         {
-            // 중복 키 처리 - 기존 키가 있으면 값 업데이트
+            // 중복 키 처리 - 기존 키가 있으면 오류
             if (EqualityComparer<TKey>.Default.Equals(current.Value.Key, key))
             {
-                current.Value = newPair;   // 기존 키면 값 업데이트
-                return false;
+                // 오류
+                throw new ArgumentNullException($"키 '{key}'는 이미 존재합니다.");
             }
 
             current = current.Next;
