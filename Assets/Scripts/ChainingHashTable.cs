@@ -44,6 +44,7 @@ public class ChainingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
 
     public TValue this[TKey key]
     {
+
         get
         {
             if (TryGetValue(key, out TValue value))
@@ -54,7 +55,14 @@ public class ChainingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
         }
         set
         {
-            Add(key, value);   // 키가 존재하면 값 업데이트, 존재하지 않으면 새로 추가
+            if (EqualityComparer<TKey>.Default.Equals(key, default))
+            {
+                this[key] = value;   // 키가 존재할 경우 업데이트
+            }
+            else
+            {
+                Add(key, value);    // 키가 존재하지 않을 경우 추가
+            }
         }
     }
 
@@ -71,7 +79,20 @@ public class ChainingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
     {
     }
 
-    private int GetIndex(TKey key)
+    public int GetIndex(TKey key)
+    {
+        int idx = GetHash(key);
+        if (TryGetValue(key, out _))
+        {
+            return idx % Capacity;
+        }
+        else
+        {
+            throw new KeyNotFoundException($"키 '{key}'가 존재하지 않습니다.");
+        }
+    }
+
+    private int GetHash(TKey key)
     {
         if (key == null)
         {
@@ -84,12 +105,11 @@ public class ChainingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
     // 삽입 - 새로운 키-값 쌍 추가 (충돌 시 링크드 리스트로 연결)
     public void Add(TKey key, TValue value)
     {
-        int index = GetIndex(key);
+        int index = GetHash(key);
 
         // 해당 슬롯이 비어있다면 새로운 링크드 리스트를 만들고 키-값 쌍 추가
         if (ChainingIndex[index] == null)
         {
-
             ChainingIndex[index] = new LinkedList<KeyValuePair<TKey, TValue>>();
             ChainingIndex[index].AddLast(new KeyValuePair<TKey, TValue>(key, value));
             Count++;
@@ -108,7 +128,7 @@ public class ChainingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
             Resize();
         }
     }
-    // GetIndex로 키에 대한 인덱스 계산
+    // GetHash로 키에 대한 인덱스 계산
     // 해당 슬롯이 비어있다면 새로운 링크드 리스트를 만들고 키-값 쌍 추가
     // 해당 슬롯이 비어있지 않다면 충돌 처리 메서드 호출하여 링크드 리스트에 노드 추가 후 데이터 개수 증가
     // 로드팩터 체크하여 필요 시 Resize 메서드 호출
@@ -129,11 +149,11 @@ public class ChainingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
 
         while (current != null)
         {
-            // 중복 키 처리 - 기존 키가 있으면 값 업데이트
+            // 중복 키 처리 - 기존 키가 있으면 오류
             if (EqualityComparer<TKey>.Default.Equals(current.Value.Key, key))
             {
-                current.Value = newPair;   // 기존 키면 값 업데이트
-                return false;
+                // 오류
+                throw new ArgumentNullException($"키 '{key}'는 이미 존재합니다.");
             }
 
             current = current.Next;
@@ -155,8 +175,7 @@ public class ChainingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
     // Resize - 내부 배열 크기 증가 (size * 2) -> 기존 노드 재배치 (Rehashing)
     private void Resize()
     {
-        int Capacity2 = Capacity * 2;   // size 2배 증가
-        var newChainingIndex = new LinkedList<KeyValuePair<TKey, TValue>>[Capacity2];   // 새로운 내부 링크드 리스트 배열 생성
+        var newChainingIndex = new LinkedList<KeyValuePair<TKey, TValue>>[Capacity * 2];   // 새로운 내부 링크드 리스트 배열 생성
 
         // 기존 노드 재배치 (Rehashing)
         foreach (var list in ChainingIndex)
@@ -167,7 +186,7 @@ public class ChainingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
             }
             foreach (var kvp in list)
             {
-                int newIndex = (kvp.Key.GetHashCode() & 0x7fffffff) % Capacity2;   // 새로운 인덱스 계산
+                int newIndex = (kvp.Key.GetHashCode() & 0x7fffffff) % (Capacity * 2);   // 새로운 인덱스 계산
                 if (newChainingIndex[newIndex] == null)   // 새로운 슬롯이 비어있는 경우
                 {
                     newChainingIndex[newIndex] = new LinkedList<KeyValuePair<TKey, TValue>>();
@@ -235,7 +254,7 @@ public class ChainingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
     // 삭제 - 기존 노드 제거
     public bool Remove(TKey key)
     {
-        int index = GetIndex(key);
+        int index = GetHash(key);
         var list = ChainingIndex[index];
 
         if (list == null)   // 해당 슬롯에 노드가 없는 경우
@@ -271,7 +290,7 @@ public class ChainingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
     public bool TryGetValue(TKey key, out TValue value) // 키가 있는 지 확인하면서 있으면 값도 반환
     {
         value = default;
-        int index = GetIndex(key);
+        int index = GetHash(key);
         var list = ChainingIndex[index];
 
         if (list == null)   // 해당 슬롯에 노드가 없는 경우
